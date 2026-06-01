@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>韓系整牙妝容 AI 修圖提示詞</title>
+  <style>
+    :root {
+      --bg: #f7f3ef;
+      --card: rgba(255, 255, 255, 0.86);
+      --text: #2f2b28;
+      --muted: #7a6f68;
+      --accent: #c58a98;
+      --accent-2: #5f7f6c;
+      --accent-3: #e8c8ce;
+      --line: rgba(47, 43, 40, 0.12);
+      --shadow: 0 24px 70px rgba(84, 60, 48, 0.16);
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(232, 200, 206, 0.75), transparent 32%),
+        radial-gradient(circle at 90% 0%, rgba(95, 127, 108, 0.24), transparent 34%),
+        linear-gradient(135deg, #fbf7f2 0%, #f2ede8 52%, #eee7df 100%);
+      min-height: 100vh;
+      line-height: 1.85;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 34px));
+      margin: 0 auto;
+      padding: 54px 0 72px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 36px;
+      padding: 54px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.72)),
+        linear-gradient(120deg, rgba(197,138,152,0.18), rgba(95,127,108,0.10));
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 290px;
+      height: 290px;
+      right: -90px;
+      top: -110px;
+      background: radial-gradient(circle, rgba(197,138,152,0.35), transparent 68%);
+      border-radius: 50%;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      left: -78px;
+      bottom: -80px;
+      background: radial-gradient(circle, rgba(95,127,108,0.22), transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(197, 138, 152, 0.14);
+      color: #8a4c5b;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      margin: 22px 0 12px;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      max-width: 800px;
+      font-size: 18px;
+      color: var(--muted);
+      margin: 0 0 28px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .chip {
+      padding: 9px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.7);
+      color: #544a44;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .card {
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: 0 18px 55px rgba(84, 60, 48, 0.11);
+      border: 1px solid rgba(255,255,255,0.86);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 24px 26px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(90deg, rgba(255,255,255,0.72), rgba(232,200,206,0.18));
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    .card-note {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .copy-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 15px;
+      background: #2f2b28;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 10px 24px rgba(47,43,40,0.18);
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+
+    .content {
+      padding: 26px;
+    }
+
+    .prompt-box {
+      white-space: pre-wrap;
+      border-radius: 22px;
+      padding: 24px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.62));
+      border: 1px solid var(--line);
+      font-size: 16px;
+    }
+
+    .negative {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,246,246,0.75));
+    }
+
+    .short {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.88), rgba(242,247,243,0.72));
+    }
+
+    .section-label {
+      display: inline-block;
+      margin: 0 0 14px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(95,127,108,0.12);
+      color: #526f5d;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .tips {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .tip {
+      padding: 20px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+    }
+
+    .tip strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #423a35;
+    }
+
+    .tip p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 26px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 22px, 1120px);
+        padding: 24px 0 44px;
+      }
+
+      .hero {
+        padding: 32px 24px;
+        border-radius: 28px;
+      }
+
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .copy-btn {
+        width: 100%;
+      }
+
+      .tips {
+        grid-template-columns: 1fr;
+      }
+
+      .content {
+        padding: 18px;
+      }
+
+      .prompt-box {
+        padding: 18px;
+        font-size: 15px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .copy-btn {
+        display: none;
+      }
+
+      .hero, .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">AI 修圖提示詞｜韓系整牙妝容版</div>
+        <h1>韓系高級感人像<br />最終提示詞</h1>
+        <p class="subtitle">
+          適用於上傳人像照片後，模擬「牙齒矯正＋拔掉 7 顆牙後的自然變化」、韓系女團妝容、自然綠色瞳孔放大片、露齒微笑與上唇圓弧豐唇效果。
+        </p>
+        <div class="chips">
+          <span class="chip">保留本人辨識度</span>
+          <span class="chip">正臉露齒微笑</span>
+          <span class="chip">拔牙矯正模擬</span>
+          <span class="chip">韓系女團妝</span>
+          <span class="chip">自然粗眉</span>
+          <span class="chip">明顯眼線</span>
+          <span class="chip">明顯下眼影</span>
+          <span class="chip">綠色自然放大片</span>
+          <span class="chip">上唇圓弧豐唇</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">完整版最終提示詞</h2>
+            <p class="card-note">適合直接貼到 AI 修圖工具，描述最完整、控制最精準。</p>
+          </div>
+          <button class="copy-btn" data-copy="fullPrompt">複製提示詞</button>
+        </div>
+        <div class="content">
+          <div class="section-label">FULL PROMPT</div>
+          <div id="fullPrompt" class="prompt-box">請根據上傳的人像照片進行 AI 修圖，保留原本人臉身份、五官特徵、臉型基礎、膚色基礎、年齡感與原本神韻，不要換臉，不要改成另一個人。整體目標是讓原始照片中的人物，模擬成為經過牙齒矯正、拔掉 7 顆牙後，搭配韓系精緻妝容與高級感修圖的效果，呈現自然升級、精緻變美的樣子，但仍然要一眼看得出是同一個人。
+
+人物請呈現為正臉人像，看向鏡頭，表情為自然、溫柔的露齒微笑，露出整齊、乾淨、自然的牙齒，笑容有親和力，不要誇張大笑。
+
+請模擬她經過牙齒矯正並拔掉 7 顆牙齒之後的自然外觀變化。重點表現為：原本較突出的嘴型自然內收，嘴凸感降低，上下唇閉合更自然，牙弓排列更整齊，咬合更協調，嘴部線條更柔和，人中到下巴的比例更順，下巴線條更清楚，臉部中下庭更協調，輪廓更精緻、秀氣、立體、上鏡。請呈現拔牙矯正後常見的自然收口感、嘴型優化感與輪廓改善感，但不要過度誇張，不要做成整形臉，不要變成完全不同的人。
+
+妝容請套用韓系女團感、精緻娃娃感、乾淨高級感。底妝是乾淨柔焦的奶油霧面肌，膚質細緻、毛孔柔化、膚色自然提亮，但不要過度死白，整體肌膚要有自然透亮、柔滑細膩的高級感。
+
+眉毛請比原本更粗一點，但要非常自然。眉型為自然濃密的韓系平眉或微彎眉，顏色為自然黑棕色或冷棕色，眉流清楚，帶有真實毛流感，眉頭柔和、眉尾自然收乾淨，整體要有自然感、乾淨感與精緻感，不要畫得太黑、太硬、太銳利，也不要過細。
+
+眼妝請使用淡粉色、杏粉色、玫瑰棕色、粉棕色系眼影，眼尾自然加深。眼線要明顯，使用黑棕色或深棕色眼線，內眼線完整填滿，外眼線清楚可見，眼尾微微上揚，讓眼睛更有神、更精緻、更有韓系女團感。
+
+下眼影要明顯，請加強下眼瞼後半段與眼尾的下眼影暈染，使用粉棕色、玫瑰棕色或裸粉棕色，讓下眼部輪廓更清楚、更深邃，同時保留清透臥蠶，營造放大、乾淨、無辜又精緻的眼神。睫毛要根根分明，上睫毛纖長捲翹，下睫毛自然點綴。
+
+請讓人物戴上自然綠色瞳孔放大片，顏色為柔和橄欖綠、灰綠色或自然森林綠，不要螢光綠，不要混血感過重。瞳孔要自然放大，有透明感與水潤感，讓眼神更清澈、更有層次、更有韓系時尚感。
+
+唇妝請特別加強豐唇效果，尤其是上唇。請把嘴唇修飾成韓系自然豐唇效果，重點是：上唇更飽滿、唇峰不明顯、上唇整體輪廓呈柔和圓弧形，不要明顯 M 字唇，不要尖銳唇峰。上唇要看起來更厚、更圓潤、更有存在感，線條柔和自然，不要僵硬。下唇也保持水潤飽滿，讓上下唇比例協調。整體嘴唇效果要呈現自然、柔嫩、精緻、有質感的韓系豐唇感，而不是誇張玻尿酸感或香腸唇。唇色建議使用豆沙玫瑰色、裸粉玫瑰色、柔霧莓粉色、冷調玫瑰色或溫柔珊瑚粉色，並帶有細緻水光感、果凍感或柔亮光澤。
+
+腮紅請使用淡粉色、蜜桃粉或玫瑰粉，輕掃在蘋果肌與眼下位置，營造自然甜美、韓系清透感與少女感。鼻影與修容請自然加強輪廓，讓鼻樑更立體，臉型更精緻，但不要有明顯修圖痕跡。
+
+髮型請改成韓系黑色長髮女團風造型，髮色為自然黑或冷黑棕，髮質柔順有光澤。可搭配空氣感碎髮、臉側碎髮、柔順長直髮或輕微層次感，整體要有乾淨、柔順、精緻、時尚、高級感。
+
+服裝可為簡潔乾淨的淺灰色或白色上衣，保留整體清爽日常感，也可以搭配低調精緻的小飾品。背景請做成乾淨柔光、淡灰白色、霧感棚拍背景，光線柔和均勻，畫面乾淨明亮。
+
+請把原本照片整體質感升級成高清精修韓系寫真人像，修復模糊、灰暗、低解析問題，提升細節、膚質與髮絲質感。整體呈現像是同一個人經過拔牙矯正、專業韓系妝髮、自然綠色放大片與高級人像精修後的升級版本，而不是完全換臉或變成另一個人。</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">負面提示詞</h2>
+            <p class="card-note">用來避免換臉、過度整形感、唇形失真與 AI 假臉問題。</p>
+          </div>
+          <button class="copy-btn" data-copy="negativePrompt">複製負面提示詞</button>
+        </div>
+        <div class="content">
+          <div class="section-label">NEGATIVE PROMPT</div>
+          <div id="negativePrompt" class="prompt-box negative">不要換臉，不要變成另一個人，不要失去原本人物辨識度，不要整形成完全不同的人，不要過度削臉，不要尖下巴，不要塑膠臉，不要 AI 假臉，不要五官失真，不要過度磨皮，不要過白，不要歐美濃妝，不要眼妝髒掉，不要眼線暈開，不要下眼影像黑眼圈，不要眉毛過黑過硬，不要假毛流感，不要牙齒怪異，不要嘴巴變形，不要笑容僵硬，不要明顯 M 字唇，不要尖銳唇峰，不要唇線過硬，不要誇張玻尿酸感，不要香腸唇，不要螢光綠瞳孔，不要恐怖放大片效果，不要背景雜亂，不要模糊，不要低解析，不要過度修圖痕跡。</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">一鍵精簡版提示詞</h2>
+            <p class="card-note">適合手機快速貼上，保留全部核心需求。</p>
+          </div>
+          <button class="copy-btn" data-copy="shortPrompt">複製精簡版</button>
+        </div>
+        <div class="content">
+          <div class="section-label">SHORT VERSION</div>
+          <div id="shortPrompt" class="prompt-box short">保留原本人臉身份與五官特徵，不換臉。將人物修成正臉看鏡頭、自然露齒微笑的韓系高級感人像。模擬牙齒矯正並拔掉 7 顆牙後的自然變化：嘴凸感降低、嘴型更內收、咬合更整齊、下巴線條更順、臉部中下庭更協調、輪廓更精緻自然。套用韓系女團妝容：奶油霧面肌、自然偏粗的韓系眉毛、明顯眼線、明顯下眼影、清透臥蠶、纖長睫毛。戴上自然綠色瞳孔放大片，呈現柔和橄欖綠或灰綠色的清透眼神。唇妝改為韓系自然豐唇效果，上唇更飽滿，唇峰不明顯，上唇整體呈圓弧形，不要明顯 M 字唇，整體自然柔嫩、有質感，不要香腸唇。髮型為黑色長髮韓系風，背景為柔光棚拍，整體高清、乾淨、精緻、高級。</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">使用建議</h2>
+            <p class="card-note">讓生成結果更穩定的三個小技巧。</p>
+          </div>
+        </div>
+        <div class="content">
+          <div class="tips">
+            <div class="tip">
+              <strong>先用完整提示詞</strong>
+              <p>第一次生成時建議使用完整版，讓模型完整理解臉型、牙齒、妝容、唇形與髮型需求。</p>
+            </div>
+            <div class="tip">
+              <strong>唇形不對就加強</strong>
+              <p>可追加：「上唇唇峰更不明顯、上唇輪廓更圓、更飽滿，但不要香腸唇」。</p>
+            </div>
+            <div class="tip">
+              <strong>避免變成別人</strong>
+              <p>每次修圖都保留「不要換臉、不要改成另一個人、保留本人辨識度」這類描述。</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      index.html｜韓系整牙妝容 AI 修圖提示詞
+    </footer>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll("[data-copy]");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const targetId = button.getAttribute("data-copy");
+        const target = document.getElementById(targetId);
+        const originalText = button.textContent;
+
+        try {
+          await navigator.clipboard.writeText(target.innerText.trim());
+          button.textContent = "已複製";
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 1500);
+        } catch (error) {
+          const range = document.createRange();
+          range.selectNodeContents(target);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          button.textContent = "請手動複製";
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 1800);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
